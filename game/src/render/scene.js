@@ -4,17 +4,19 @@
 import * as THREE from 'three';
 import { MAP } from '../map.js';
 
-// A vertical gradient rather than a flat colour: the foundry sits under a dusk sky, and the eye
-// reads depth from that band even where the walls leave it visible.
+// A vertical gradient rather than a flat colour: the foundry sits at dusk, and the warm band at the
+// horizon is what makes the far end of a lane read as distance rather than as a dark wall.
 function skyGradient() {
   const c = document.createElement('canvas');
   c.width = 4;
   c.height = 256;
   const g = c.getContext('2d');
   const grad = g.createLinearGradient(0, 0, 0, 256);
-  grad.addColorStop(0, '#2b3a4c');
-  grad.addColorStop(0.45, '#1d2733');
-  grad.addColorStop(1, '#0d1114');
+  grad.addColorStop(0, '#4d6285');
+  grad.addColorStop(0.34, '#9d7a72');
+  grad.addColorStop(0.52, '#d98a58');
+  grad.addColorStop(0.74, '#6b4636');
+  grad.addColorStop(1, '#14171a');
   g.fillStyle = grad;
   g.fillRect(0, 0, 4, 256);
   const tex = new THREE.CanvasTexture(c);
@@ -57,7 +59,7 @@ export function createScene(host) {
   renderer.shadowMap.type = THREE.PCFShadowMap;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.28;
+  renderer.toneMappingExposure = 1.34;
   host.appendChild(renderer.domElement);
 
   const scene = new THREE.Scene();
@@ -69,9 +71,9 @@ export function createScene(host) {
 
   const hemi = new THREE.HemisphereLight(0xbcd2e6, 0x3a2f26, 1.35);
   scene.add(hemi);
-  scene.add(new THREE.AmbientLight(0x8fa2b4, 0.35));
+  scene.add(new THREE.AmbientLight(0x9aacbe, 0.55));
 
-  const key = new THREE.DirectionalLight(0xffe0bb, 2.15);
+  const key = new THREE.DirectionalLight(0xffcf9c, 2.45);
   key.position.set(26, 42, 18);
   key.castShadow = true;
   key.shadow.mapSize.set(2048, 2048);
@@ -91,7 +93,7 @@ export function createScene(host) {
 
   for (let i = 0; i < MAP.lamps.length; i += 1) {
     const lamp = MAP.lamps[i];
-    const light = new THREE.PointLight(lamp.color, lamp.intensity * 2.1, lamp.distance, 1.85);
+    const light = new THREE.PointLight(lamp.color, lamp.intensity * 3.4, lamp.distance, 1.75);
     light.position.set(lamp.x, lamp.y, lamp.z);
     scene.add(light);
     const bulb = new THREE.Mesh(

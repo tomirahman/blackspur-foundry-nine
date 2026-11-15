@@ -10,8 +10,8 @@ export const MAP = {
   name: 'Foundry Nine',
   subtitle: 'Crucible · Coolant',
   bounds: { minX: -34, maxX: 34, minZ: -34, maxZ: 34 },
-  sky: 0x1a222a,
-  fog: { color: 0x1e262e, near: 22, far: 78 },
+  sky: 0x4d6285,
+  fog: { color: 0x7a5a4a, near: 16, far: 66 },
 
   spawns: {
     atk: [

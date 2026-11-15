@@ -182,7 +182,7 @@ function syncCamera(dt) {
     const rig = rigs.get(a.id);
     if (!rig) continue;
     rig.visible = a.alive;
-    if (a.alive) poseCharacter(rig, a, sim.time);
+    if (a.alive) poseCharacter(rig, a);
   }
 
   const def = activeDef(p);

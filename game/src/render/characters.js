@@ -3,9 +3,7 @@
 
 import * as THREE from 'three';
 
-const TEAM_COLOUR = { atk: 0x9a5230, def: 0x3f5a6b };
-const TEAM_DARK = { atk: 0x53301f, def: 0x2b3d49 };
-const VISOR = { atk: 0xffb06a, def: 0x7fe0ff };
+const TEAM_COLOUR = { atk: 0xd4692f, def: 0x2f7f86 };
 
 function part(geo, mat, x, y, z) {
   const m = new THREE.Mesh(geo, mat);
@@ -16,9 +14,11 @@ function part(geo, mat, x, y, z) {
 
 export function createCharacterRig(actor) {
   const group = new THREE.Group();
-  const body = new THREE.MeshStandardMaterial({ color: TEAM_COLOUR[actor.team], roughness: 0.72, metalness: 0.12 });
-  const dark = new THREE.MeshStandardMaterial({ color: TEAM_DARK[actor.team], roughness: 0.8, metalness: 0.1 });
-  const visor = new THREE.MeshBasicMaterial({ color: VISOR[actor.team] });
+  // A dark body with the team's own colour only on the markers: at range a figure has to read as a
+  // person against tan crates, and a body painted in the accent colour reads as another crate.
+  const body = new THREE.MeshStandardMaterial({ color: 0x24282d, roughness: 0.78, metalness: 0.16 });
+  const dark = new THREE.MeshStandardMaterial({ color: 0x14171a, roughness: 0.85, metalness: 0.1 });
+  const visor = new THREE.MeshBasicMaterial({ color: TEAM_COLOUR[actor.team] });
 
   const torso = part(new THREE.BoxGeometry(0.52, 0.62, 0.3), body, 0, 1.16, 0);
   const hips = part(new THREE.BoxGeometry(0.44, 0.24, 0.28), dark, 0, 0.82, 0);
@@ -46,7 +46,7 @@ export function createCharacterRig(actor) {
 }
 
 // Reads the actor and poses the rig. No allocation: every value lands on existing objects.
-export function poseCharacter(rig, actor, time) {
+export function poseCharacter(rig, actor) {
   const parts = rig.userData.parts;
   rig.position.set(actor.pos.x, actor.pos.y, actor.pos.z);
   rig.rotation.y = actor.yaw;
@@ -73,10 +73,7 @@ export function poseCharacter(rig, actor, time) {
   parts.gun.rotation.x = -actor.pitch * 0.9;
   parts.armR.rotation.x = -0.4 - actor.pitch * 0.4;
 
-  const blind = actor.blind > 0;
-  void blind;
-  parts.face.material.color.setHex(VISOR[actor.team]);
-  void time;
+  parts.face.material.color.setHex(TEAM_COLOUR[actor.team]);
 }
 
 export function setCharacterHidden(rig, hidden) {

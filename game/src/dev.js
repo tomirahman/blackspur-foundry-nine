@@ -12,11 +12,12 @@ export function installDev(ctx) {
 
   window.__blk = {
     sim,
+    scene: ctx.scene,
     play() { begin(); },
     live() { sim.match.phase = 'live'; sim.match.clock = MATCH.roundTime; begin(); },
     freeze() { sim.match.phase = 'freeze'; sim.match.clock = MATCH.freezeTime; },
     hideStart() { document.getElementById('start').classList.add('off'); },
-    hideBanner() { const b = document.getElementById('banner'); if (b) b.className = ''; },
+    hideBanner() { const b = document.getElementById('banner'); if (b) b.style.display = 'none'; },
     armory() { ctx.buy?.open(); },
     aim(yaw, pitch) { p.yaw = yaw; p.pitch = pitch; ctx.input.state.yaw = yaw; ctx.input.state.pitch = pitch; },
     warp(x, z, y = 0) { p.pos.x = x; p.pos.z = z; p.pos.y = y; p.vel.x = 0; p.vel.y = 0; p.vel.z = 0; },
